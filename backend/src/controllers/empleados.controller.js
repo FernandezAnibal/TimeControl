@@ -19,34 +19,30 @@ empleadoCtrl.createEmpleados = async (req, res) => {
 
 empleadoCtrl.updateEmpleado = async (req, res) => {
     
-    var newempleado = await Empleado.findOne( {
-        _id: req.params.id,
-        "maquinas.maquina": req.body.maquina
-    })
-    
-    if(!newempleado){
-    newempleado = await Empleado.findOneAndUpdate(
+    const{maquina, operacion} = req.body;
+
+    var newempleado = await Empleado.findOneAndUpdate(
         {
             _id: req.params.id,
+            "maquinas.maquina":{$ne:maquina}
         },
         {
             $addToSet:{
-                maquinas : {"maquina":req.body.maquina}
+                maquinas : {maquina}
             }
         }
         )
-    }
     
     newempleado = await Empleado.findOneAndUpdate(
             {
                 _id: req.params.id,
-                "maquinas.maquina": req.body.maquina
+                "maquinas.maquina": maquina
             },
             {
                 $addToSet:{
                     "maquinas.$.intervalosT" :
                     {
-                        operacion: req.body.operacion,
+                        operacion,
                         check: (Date.now().toString())
                     }
                 }

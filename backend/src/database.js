@@ -7,8 +7,8 @@ mongoose.connect(URI,{
     useNewUrlParser:true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    //Pendiente que lo modifique y no he verificado empleados
-    useFindAndModify:false
+    useFindAndModify:false,
+    autoIndex: false
 });
 
 const connection = mongoose.connection;

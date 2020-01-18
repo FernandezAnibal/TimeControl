@@ -10,13 +10,21 @@ posicionCtrl.getPosiciones = async (req, res) => {
 posicionCtrl.createPosicion = async (req, res) => 
 {
     const {nombre, ejecucion, cantidad, procesos} = req.body;
-    const newPosicion = new Posicion({
+
+    var newPosicion = await Posicion.findOne({
+        nombre,
+        ejecucion
+    });
+    if (!newPosicion){
+    newPosicion = new Posicion({
         nombre,
         ejecucion,
         cantidad,
         procesos
     })
+    
     await newPosicion.save();
+    }
     res.json(newPosicion);
 }
 
@@ -31,11 +39,7 @@ posicionCtrl.updatePosicion = async (req, res)=>
             "procesos.proceso" : proceso,
             "procesos.maquinas.maquina": {$ne:maquina}
         },
-        {
-            $set:{
-                "procesos.$.cantidadR":cantidadR,
-                "procesos.$.cantidadA":cantidadA
-            },
+        {           
             $addToSet: 
             {
                 "procesos.$.maquinas":
@@ -55,9 +59,13 @@ posicionCtrl.updatePosicion = async (req, res)=>
             "procesos.maquinas.maquina": maquina
         },
         {
+            $set:{
+                "procesos.$.cantidadR":cantidadR,
+                "procesos.$.cantidadA":cantidadA
+            },
             $push: 
             {
-                "procesos.$.maquinas.$[elem].intervalosT":
+                "procesos.$.maquinas.$[x].intervalosT":
                 {
                     empleado,
                     legajo,
@@ -67,7 +75,7 @@ posicionCtrl.updatePosicion = async (req, res)=>
             }
         }, 
         { 
-            "arrayFilters":[{"elem.maquina":maquina}],
+            "arrayFilters":[{"x.maquina":maquina}],
              new :true
         }
     )
