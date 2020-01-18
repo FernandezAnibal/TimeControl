@@ -4,19 +4,21 @@ const intervaloTSchema = new Schema({
     empleado: String,
     legajo: Number,
     operacion: String,
-    checkTime: String
+    checkTime: String,
 })
 
 const maquinaSchema = new Schema({
     maquina : String,
-    intervalosT: [intervaloTSchema]
+    intervalosT: [intervaloTSchema],
+    "_id": false
 })
 
 const procesoSchema = new Schema({
     proceso: String,
     cantidadR: Number,
     cantidadA: Number,
-    maquinas: [maquinaSchema]
+    maquinas: [maquinaSchema],
+    "_id": false
 })
 
 

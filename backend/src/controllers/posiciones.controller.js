@@ -23,45 +23,56 @@ posicionCtrl.createPosicion = async (req, res) =>
 posicionCtrl.updatePosicion = async (req, res)=>
 {
     const {nombre, ejecucion, proceso, cantidadR, cantidadA, maquina, empleado, legajo, operacion} = req.body;
-    var newPosition = await Posicion.findOne(
+
+    var newPosition = await Posicion.findOneAndUpdate(
         {
             nombre,
             ejecucion,
             "procesos.proceso" : proceso,
-            "procesos.maquinas.maquina": maquina 
-        }
-    );
-    
-    if(!newPosition){
-        newPosition = await Posicion.findOneAndUpdate(
-            {
-                nombre,
-                ejecucion,
-                "procesos.proceso" : proceso,
+            "procesos.maquinas.maquina": {$ne:maquina}
+        },
+        {
+            $set:{
+                "procesos.$.cantidadR":cantidadR,
+                "procesos.$.cantidadA":cantidadA
             },
+            $addToSet: 
             {
-                $addToSet: 
+                "procesos.$.maquinas":
                 {
-                    "procesos.$.maquinas":
-                    {
-                        maquina
-                    }
+                    maquina,
                 }
-            },{multi: true}, function (err, result)
-            { console.log(result)}
-        )
-    }
+            }
+        },function (err, result)
+        { console.log(result)}
+    )
 
-    newPosition = await Posicion.findOne(
+    newPosition = await Posicion.findOneAndUpdate(
         {
             nombre,
             ejecucion,
             "procesos.proceso" : proceso,
             "procesos.maquinas.maquina": maquina
+        },
+        {
+            $push: 
+            {
+                "procesos.$.maquinas.$[elem].intervalosT":
+                {
+                    empleado,
+                    legajo,
+                    operacion,
+                    checkTime :  (Date.now().toString())
+                }
+            }
+        }, 
+        { 
+            "arrayFilters":[{"elem.maquina":maquina}],
+             new :true
         }
     )
-    
-    res.json(newPosition);
+
+        res.json(newPosition);
 }
 
 posicionCtrl.getPosicion = async (req, res) => 
