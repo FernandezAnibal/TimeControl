@@ -12,7 +12,7 @@ const maquinaSchema = new Schema({
 
 const empleadoSchema = new Schema({
     empleado : String,
-    legajo: {type: String, required: true, unique: true, trim: true },
+    legajo: {type: String, required: true, unique: true, trim: true, index: true },
     maquinas: [maquinaSchema]
        
 })
