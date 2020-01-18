@@ -21,6 +21,7 @@ empleadoCtrl.updateEmpleado = async (req, res) => {
     
     const{maquina, operacion} = req.body;
 
+    // Agrega una nueva máquina si no existe
     var newempleado = await Empleado.findOneAndUpdate(
         {
             _id: req.params.id,
@@ -33,6 +34,7 @@ empleadoCtrl.updateEmpleado = async (req, res) => {
         }
         )
     
+    //Añade un checkpoint para su uso
     newempleado = await Empleado.findOneAndUpdate(
             {
                 _id: req.params.id,

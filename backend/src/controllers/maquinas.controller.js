@@ -10,14 +10,24 @@ maquinaCtrl.getMaquinas = async (req, res) => {
 
 maquinaCtrl.createMaquina = async (req, res) => {
     const{maquina} = req.body;
-    const newMaquina = new Maquina({
+    var newMaquina = await Maquina.findOne({
+        maquina
+    })
+
+    if(!newMaquina) {
+    newMaquina = new Maquina({
         maquina,
         procesoA : "",
         empleadoA: "",
         estado:"inactiva"
     });
     await newMaquina.save()
-    res.json({mensaje: "crear maquina"})
+    res.json({mensaje: "Maquina Creada"})
+    }
+    else{
+        res.json({mensaje: "Maquina ya Existe"})
+    }
+    
 }
 
 maquinaCtrl.updateMaquina = async (req, res) => {
