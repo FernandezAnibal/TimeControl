@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import { Container, Form, Button, Card, Row, Col} from 'react-bootstrap';
 
+
 export default function CreateUser() {
     const [data, setData] = useState([]);
     const [username, setUsername] = useState("");
@@ -32,7 +33,7 @@ export default function CreateUser() {
         getUser();
     }
 
-
+    getUser();
     return (
         <Container>
             <Container className='mt-2'>
