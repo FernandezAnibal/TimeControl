@@ -1,24 +1,30 @@
-import React, { Component } from 'react'
-import {Navbar, Nav, Container} from 'react-bootstrap'
-import {NavLink, NavbarBrand} from 'reactstrap'
+import React from 'react'
+import {Menu, Icon} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
-export default class Navigation extends Component {
+export default function Principal() {
 
-  render() {
-    return (
-        <Navbar className="navbar navbar-expand-lg" bg="dark" variant="dark">
-            <Container>
-                <NavbarBrand tag={Link} to="/" >
+    return (  
+            <Menu fluid widths={4} icon='labeled' size='massive'>
+                <Menu.Item as={Link} to="/" name='tasks'>
+                    <Icon name='tasks' />
+                    Principal
+                </Menu.Item>
+
+                <Menu.Item as={Link} to="/maquinas"  name='cogs'>
+                    <Icon name='cogs' />
+                    Maquinas
+                </Menu.Item>
+
+                <Menu.Item as={Link} to="/empleados" name='id card'>
+                    <Icon name='id card' />
+                    Empleados
+                </Menu.Item>
+                <Menu.Item as={Link} to="/principal" name='codepen'>
+                    <Icon name='codepen' />
                     Posiciones
-            </NavbarBrand>
-                <Nav className="ml-auto">
-                    <NavLink tag={Link} to="/">Posiciones</NavLink>
-                    <NavLink tag={Link} to="/create">Crear Posicion</NavLink>
-                    <NavLink tag={Link} to="/user">Crear Empleado</NavLink>
-                </Nav>
-            </Container>
-        </Navbar>
-    )
-  }
+                </Menu.Item>
+            </Menu>
+    
+    )  
 }

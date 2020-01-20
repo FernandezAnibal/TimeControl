@@ -66,8 +66,8 @@ empleadoCtrl.getEmpleado = async (req, res) =>
 
 empleadoCtrl.deleteEmpleado = async (req, res) => 
 {
-    const empleado = await Empleado.findOneAndDelete(req.params.id); 
+    const empleado = await Empleado.findOneAndDelete({"_id":req.params.id}); 
     console.log(empleado);
-    res.json({title: 'Deleted Empleado'})
+    res.json({title: 'EmpleadoBorrado'});
 }
 module.exports = empleadoCtrl;

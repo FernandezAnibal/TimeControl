@@ -1,0 +1,19 @@
+html, body {
+  background:#ffffff  !important;
+  height: 100%;
+  align-content: center;
+}
+
+Button {
+    width: 9em;
+    height: 3em;
+}
+
+.menuE{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+
+}
+
