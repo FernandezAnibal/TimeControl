@@ -22,7 +22,7 @@ export default function Empleados() {
         <div class="menuE">
                 {
                     data.map(empleado =>
-                        <Button primary circular size ='massive' key={empleado._id} style={{ marginBottom: '1em' }} >
+                        <Button color='gray' circular size ='massive' key={empleado._id} style={{ marginBottom: '1em' }} >
                             {empleado.empleado} 
                         </Button>
                     )
