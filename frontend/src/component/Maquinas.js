@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Button, Container} from 'semantic-ui-react';
 
-export default function Maquinas() {
+export default function Maquinas(props) {
     const [data, setData] = useState([]);
     const apiUrl = "http://localhost:4000/api/Maquinas";
     
@@ -10,7 +10,11 @@ export default function Maquinas() {
     const getUser = async () =>{
         const result = await axios(apiUrl);
         setData(result.data);
-        console.log(result.data);
+
+    }
+
+    const print = async (emp) =>{
+        props.mensajee(emp)
     }
 
     useEffect(() => {
@@ -19,10 +23,10 @@ export default function Maquinas() {
     
     return (
         <Container>
-        <div class="menuE" textAlign = 'center'>
+        <div className ="menuE">
                 {
                     data.map(maquina =>
-                        <Button primary circular size ='massive' key={maquina._id} style={{ marginBottom: '1em' }} >
+                        <Button  onClick={() => print(maquina)}  circular size ='massive' key={maquina._id} style={{ marginBottom: '1em' }} >
                             {maquina.maquina} 
                         </Button>
                     )

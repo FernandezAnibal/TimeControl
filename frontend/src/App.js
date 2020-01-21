@@ -7,7 +7,6 @@ import 'react-router-bootstrap';
 
 
 import Navigation from './component/Navigation'
-import CreateNote from './component/CreateNote'
 import Empleados from './component/Empleados'
 import Maquinas from './component/Maquinas'
 import Principal from './component/Principal'

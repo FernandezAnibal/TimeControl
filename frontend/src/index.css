@@ -21,3 +21,11 @@ Button {
   display: flex;
   flex-flow: column;
 }
+
+.Menue{
+ max-width: 60vh;
+ align-content: center;
+}
+
+
+
