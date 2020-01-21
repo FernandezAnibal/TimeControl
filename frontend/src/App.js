@@ -8,8 +8,7 @@ import 'react-router-bootstrap';
 
 import Navigation from './component/Navigation'
 import CreateNote from './component/CreateNote'
-//import NoteList from './component/NoteList'
-//import CreateUser from './component/CreateUser'
+import Empleados from './component/Empleados'
 import Maquinas from './component/Maquinas'
 import Principal from './component/Principal'
 
@@ -19,10 +18,9 @@ function App() {
     <Router >
         <Navigation/>
         <Route path= "/" exact component = {Principal} />
-        <Route path= "/edit/:id" component = {CreateNote} />
-        <Route path= "/create" component = {CreateNote} />
         <Route path= "/maquinas" component = {Maquinas} />
         <Route path= "/principal" component = {Principal} />
+        <Route path= "/empleados" component = {Empleados} />
     </Router>
   );
 }
