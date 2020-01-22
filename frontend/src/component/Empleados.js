@@ -4,7 +4,7 @@ import {Button, Container} from 'semantic-ui-react';
 
 export default function Empleados(props) {
     const [data, setData] = useState([]);
-    const apiUrl = "http://192.168.0.117:4000/api/empleados";
+    const apiUrl = "http://localhost:4000/api/empleados";
     
 
 

@@ -17,15 +17,16 @@ Button {
   align-items: center;
 }
 
+
+.menuE2{
+  min-height: 60vh;
+
+}
 .cont {
   display: flex;
   flex-flow: column;
 }
 
-.Menue{
- max-width: 60vh;
- align-content: center;
-}
 
 
 

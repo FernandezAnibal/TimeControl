@@ -62,11 +62,11 @@ export default function Principal() {
         {banda}
         <Transition.Group animation='drop' duration='0'>
             {!empleado && (
-              <QRreaderW />
+              <Empleados mensajee ={callbackEmpleado} />
               
             )}
             {empleado && !maquina && (
-              <Empleados mensajee ={callbackEmpleado} />
+              <QRreaderW />
             )}
           </Transition.Group>
         {banda}
