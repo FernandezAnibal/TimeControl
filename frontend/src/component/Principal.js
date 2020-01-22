@@ -8,6 +8,7 @@ import QRreaderW from './QRReader';
 export default function Principal() {
   const [empleado, setEmpleado] = useState(null);
   const [maquina, setMaquina] = useState(null);
+  const [Posicion, setPosicion] = useState(null);
 
   function callbackEmpleado(empleado) {
       setEmpleado(empleado.empleado);
@@ -17,8 +18,8 @@ export default function Principal() {
     setMaquina(maquina.maquina);
   }
 
-  function callbackPosicion(maquina) {
-    setMaquina(maquina.maquina);
+  function callbackPosicion(Posicion) {
+    setMaquina(Posicion.maquina);
   }
 
   const banda = (
@@ -31,7 +32,7 @@ export default function Principal() {
             </Step.Content>
           </Step>
     
-          <Step active ={!Boolean(maquina)} completed =  {Boolean(maquina)}>
+          <Step active ={!Boolean(maquina)} disabled ={!Boolean(empleado)} completed =  {Boolean(maquina)}>
             <Icon name='cog' />
             <Step.Content>
               <Step.Title>{maquina ? maquina :"Maquina"}</Step.Title>
@@ -47,26 +48,30 @@ export default function Principal() {
             </Step.Content>
           </Step>
 
-          <Step disabled>
+          <Step disabled >
             <Icon name='settings' />
             <Step.Content>
               <Step.Title>Proceso</Step.Title>
               <Step.Description>Seleccionar Proceso</Step.Description>
             </Step.Content>
           </Step>
+
+
         </Step.Group>
   )
 
     return (
         <div className ="cont">
         {banda}
-        <Transition.Group animation='drop' duration='0'>
+        <Transition.Group animation='drop' duration = '0'>
             {!empleado && (
-              <Empleados mensajee ={callbackEmpleado} />
-              
+              <Empleados mensajee ={callbackEmpleado} />        
             )}
             {empleado && !maquina && (
-              <QRreaderW />
+             <Maquinas mensajee ={callbackMaquina} /> 
+            )}
+            {maquina && (
+              <QRreaderW/>
             )}
           </Transition.Group>
         {banda}

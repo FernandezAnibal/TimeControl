@@ -22,7 +22,7 @@ export default function Maquinas(props) {
     }, []);
     
     return (
-        <Container>
+        <Container >
         <div className ="menuE">
                 {
                     data.map(maquina =>

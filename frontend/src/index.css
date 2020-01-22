@@ -10,22 +10,31 @@ Button {
 }
 
 .menuE{
-  min-height: 60vh;
+  min-height: 67vh;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
   align-items: center;
 }
 
-
-.menuE2{
-  min-height: 60vh;
-
+.flexi{
+  object-fit: cover;
+  background-color: blue;
+  padding:5em;
+  width:67vh;
+  max-width: 100%;
+  overflow: hidden;
+  height: 67vh;
+  position: relative;
+  display:block
 }
-.cont {
-  display: flex;
-  flex-flow: column;
+
+.SegmentQR{
+  height: 60vh;
+  display: flex; 
+  align-items: center;
 }
+
 
 
 

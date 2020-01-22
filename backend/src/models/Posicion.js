@@ -23,7 +23,7 @@ const procesoSchema = new Schema({
 
 
 const posicionSchema = new Schema({
-    nombre : String,
+    posicion : String,
     ejecucion: String,
     cantidad: Number,
     listo: Boolean,

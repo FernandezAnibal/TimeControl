@@ -9,15 +9,15 @@ posicionCtrl.getPosiciones = async (req, res) => {
 
 posicionCtrl.createPosicion = async (req, res) => 
 {
-    const {nombre, ejecucion, cantidad, procesos} = req.body;
+    const {posicion, ejecucion, cantidad, procesos} = req.body;
 
     var newPosicion = await Posicion.findOne({
-        nombre,
+        posicion,
         ejecucion
     });
     if (!newPosicion){
     newPosicion = new Posicion({
-        nombre,
+        posicion,
         ejecucion,
         cantidad,
         procesos
@@ -30,11 +30,11 @@ posicionCtrl.createPosicion = async (req, res) =>
 
 posicionCtrl.updatePosicion = async (req, res)=>
 {
-    const {nombre, ejecucion, proceso, cantidadR, cantidadA, maquina, empleado, legajo, operacion} = req.body;
+    const {posicion, ejecucion, proceso, cantidadR, cantidadA, maquina, empleado, legajo, operacion} = req.body;
 
     var newPosition = await Posicion.findOneAndUpdate(
         {
-            nombre,
+            posicion,
             ejecucion,
             "procesos.proceso" : proceso,
             "procesos.maquinas.maquina": {$ne:maquina}
@@ -53,7 +53,7 @@ posicionCtrl.updatePosicion = async (req, res)=>
 
     newPosition = await Posicion.findOneAndUpdate(
         {
-            nombre,
+            posicion,
             ejecucion,
             "procesos.proceso" : proceso,
             "procesos.maquinas.maquina": maquina
@@ -85,8 +85,9 @@ posicionCtrl.updatePosicion = async (req, res)=>
 
 posicionCtrl.getPosicion = async (req, res) => 
 {
-    const posicion = await Posicion.findById(req.params.id);
-    res.json(posicion)
+    const {posicion, ejecucion} = req.body;
+    const result = await Posicion.findOne({posicion, ejecucion});
+    res.json(result)
 }
 
 posicionCtrl.deletePosicion = async (req, res) =>
