@@ -63,15 +63,15 @@ export default function Principal() {
     return (
         <div className ="cont">
         {banda}
-        <Transition.Group animation='drop' duration = '0'>
+        <Transition.Group animation='drop' duration = '2000' >
             {!empleado && (
-              <Empleados mensajee ={callbackEmpleado} />        
+              <Empleados mensajee ={callbackEmpleado} onHide  />        
             )}
             {empleado && !maquina && (
-             <Maquinas mensajee ={callbackMaquina} /> 
+             <Maquinas mensajee ={callbackMaquina}  /> 
             )}
             {maquina && (
-              <QRreaderW/>
+              <QRreaderW mensaje = {{empleado, maquina}}/>
             )}
           </Transition.Group>
         {banda}
