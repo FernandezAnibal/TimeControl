@@ -1,19 +1,17 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios'
-import {Segment, Grid, Icon, Search, Divider, Header, Container, Button, Card, Image} from 'semantic-ui-react';
+import {Segment, Grid, Icon, Header,  Button, Container, Transition} from 'semantic-ui-react';
 import QrReader from 'react-qr-scanner'
-import QrReader2 from 'react-qr-reader'
 
 export default function QrReaderC() {
-    const [data, setData]= useState([]);
-    const [result, setResult] = useState([]);
-    const apiUrl = "http://localhost:4000/api/posiciones";
+    const [posicion, setPosicion] = useState([]);
+    const apiUrl = "http://localhost:4000/api/posiciones/1";
 
     const handleScan = data =>{
         if(data){
-          console.log(JSON.parse(data).ejecucion);
-          
-          getPosicion(data);
+         
+          getPosicion(JSON.parse(data));
+          console.log("Scan")
         }
     }
 
@@ -22,6 +20,8 @@ export default function QrReaderC() {
         console.error(err);
     }
 
+
+    //Estilos del QR
     const previewStyle = {
         'object-fit': 'cover',
         'backgroundColor': 'black',
@@ -35,8 +35,17 @@ export default function QrReaderC() {
         'testAling' : 'center'
 
     }
-    const getPosicion = async (id)=>{
-      setResult(id);
+
+
+
+    const getPosicion = async (posData)=>{
+      const {posicion, ejecucion} = posData;
+      const res = await axios.get(apiUrl, {
+        // Asignamos el valor de userInfo a params
+        params: posData
+      });
+      setPosicion(res.data);
+      console.log(res.data);
     }
 
 
@@ -48,17 +57,26 @@ export default function QrReaderC() {
 
           <Grid.Row verticalAlign='middle'>
 
-            <Grid.Column >
-            <Segment className='SegmentQR'>
-              <Header  textAlign ='center'  className='ButtonQR' icon>
-                <p><QrReader
-                  delay={500}
-                  style={previewStyle}
-                  onError={handleError}
-                  onScan={handleScan}
-                />
-                </p>
-              </Header>
+            <Grid.Column verticalAlign ='middle' >
+            <Segment className='SegmentQR' textAlign = 'center' >
+            
+            <Transition.Group animation='drop' duration = '0'>
+            {posicion.posicion && (
+              <Container>
+              <Header>Ejecucion: {posicion.ejecucion}</Header>   
+              <Header>Posicion: {posicion.posicion}</Header>     
+              </Container>     
+            )}
+            {!posicion.posicion && (
+             <QrReader
+             delay={500}
+             style={previewStyle}
+             onError={handleError}
+             onScan={handleScan}
+           />
+            )}
+          </Transition.Group>
+
             </Segment>
             </Grid.Column>
 
@@ -67,8 +85,6 @@ export default function QrReaderC() {
               <Header textAlign='center'  icon>
                 <Icon name='settings' />
                 Escanear QR para seleccionar Proceso
-                {result}
-                <br/>
               </Header>
               </Segment>
            </Grid.Column>

@@ -7,7 +7,7 @@ export default function Maquinas(props) {
     const apiUrl = "http://localhost:4000/api/Maquinas";
     
 
-    const getUser = async () =>{
+    const getMachines = async () =>{
         const result = await axios(apiUrl);
         setData(result.data);
 
@@ -18,7 +18,7 @@ export default function Maquinas(props) {
     }
 
     useEffect(() => {
-        getUser();
+        getMachines();
     }, []);
     
     return (

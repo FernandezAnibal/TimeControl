@@ -84,10 +84,15 @@ posicionCtrl.updatePosicion = async (req, res)=>
 }
 
 posicionCtrl.getPosicion = async (req, res) => 
-{
-    const {posicion, ejecucion} = req.body;
-    const result = await Posicion.findOne({posicion, ejecucion});
-    res.json(result)
+{   
+    
+    const {posicion, ejecucion} = req.query;
+    const newPosicion = await Posicion.findOne({
+        posicion,
+        ejecucion
+    });
+    res.json(newPosicion);
+
 }
 
 posicionCtrl.deletePosicion = async (req, res) =>
