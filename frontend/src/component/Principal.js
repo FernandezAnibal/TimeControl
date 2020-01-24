@@ -8,7 +8,8 @@ import QRreaderW from './QRReader';
 export default function Principal() {
   const [empleado, setEmpleado] = useState([]);
   const [maquina, setMaquina] = useState([]);
-  const [Posicion, setPosicion] = useState(null);
+  const [posicion, setPosicion] = useState(null);
+  const [proceso, setProceso] = useState(null);
 
   function callbackEmpleado(empleado) {
       setEmpleado(empleado);
@@ -18,10 +19,14 @@ export default function Principal() {
     setMaquina(maquina);
   }
 
-  function callbackPosicion(Posicion) {
-    setMaquina(Posicion.maquina);
+  function callbackPosicion(posicion) {
+    setPosicion(posicion);
   }
-  console.log(empleado);
+
+  function callbackProceso(proceso) {
+    setProceso(proceso);
+  }
+
   const banda = (
     <Step.Group widths={4}>
           <Step active ={!Boolean(empleado.empleado)} completed =  {Boolean(empleado.empleado)}>
@@ -40,19 +45,19 @@ export default function Principal() {
             </Step.Content>
           </Step>
     
-          <Step disabled >
+          <Step active ={!Boolean(posicion)} disabled ={!Boolean(maquina.maquina)} completed =  {Boolean(posicion)} >
             <Icon name='codepen' />
             <Step.Content>
-              <Step.Title>Posicion</Step.Title>
-              <Step.Description>Seleccionar Posicion</Step.Description>
+              <Step.Title>{posicion}</Step.Title>
+              <Step.Description>{posicion ? "":"Seleccionar posición"}</Step.Description>
             </Step.Content>
           </Step>
 
-          <Step disabled >
+          <Step  active ={!Boolean(proceso)} disabled ={!Boolean(posicion)} completed =  {Boolean(proceso)} >
             <Icon name='settings' />
             <Step.Content>
-              <Step.Title>Proceso</Step.Title>
-              <Step.Description>Seleccionar Proceso</Step.Description>
+                <Step.Title>{proceso}</Step.Title>
+              <Step.Description>{proceso ? "":"Seleccionar proceso"}</Step.Description>
             </Step.Content>
           </Step>
 
@@ -71,7 +76,7 @@ export default function Principal() {
              <Maquinas mensajee ={callbackMaquina}  /> 
             )}
             {maquina.maquina && (
-              <QRreaderW mensaje = {{empleado, maquina}}/>
+              <QRreaderW mensaje = {{empleado, maquina}} fPosicion ={callbackPosicion} fProceso = {callbackProceso}/>
             )}
           </Transition.Group>
         {banda}

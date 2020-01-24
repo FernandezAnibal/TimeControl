@@ -21,9 +21,11 @@ html, body {
 .menuProcesos{
   height: 100%;
   width: 100%;
+  padding-top: 30px;
   display: flex;
   justify-content: space-evenly;
   flex-flow: column;
+  align-content: flex-start;
 }
 
 .flexi{
