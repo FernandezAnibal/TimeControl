@@ -6,37 +6,37 @@ import Maquinas from './Maquinas';
 import QRreaderW from './QRReader';
 
 export default function Principal() {
-  const [empleado, setEmpleado] = useState(null);
-  const [maquina, setMaquina] = useState(null);
+  const [empleado, setEmpleado] = useState([]);
+  const [maquina, setMaquina] = useState([]);
   const [Posicion, setPosicion] = useState(null);
 
   function callbackEmpleado(empleado) {
-      setEmpleado(empleado.empleado);
+      setEmpleado(empleado);
   }
 
   function callbackMaquina(maquina) {
-    setMaquina(maquina.maquina);
+    setMaquina(maquina);
   }
 
   function callbackPosicion(Posicion) {
     setMaquina(Posicion.maquina);
   }
-
+  console.log(empleado);
   const banda = (
     <Step.Group widths={4}>
-          <Step active ={!Boolean(empleado)} completed =  {Boolean(empleado)}>
+          <Step active ={!Boolean(empleado.empleado)} completed =  {Boolean(empleado.empleado)}>
             <Icon name='user' />
             <Step.Content>
-              <Step.Title>{empleado ? empleado :"Empleado"}</Step.Title>
-              <Step.Description>{empleado ? "":"Seleccionar empleado"}</Step.Description>
+              <Step.Title>{empleado.empleado ? empleado.empleado :"Empleado"}</Step.Title>
+              <Step.Description>{empleado.empleado ? "":"Seleccionar empleado"}</Step.Description>
             </Step.Content>
           </Step>
     
-          <Step active ={!Boolean(maquina)} disabled ={!Boolean(empleado)} completed =  {Boolean(maquina)}>
+          <Step active ={!Boolean(maquina.maquina)} disabled ={!Boolean(empleado.empleado)} completed =  {Boolean(maquina.maquina)}>
             <Icon name='cog' />
             <Step.Content>
-              <Step.Title>{maquina ? maquina :"Maquina"}</Step.Title>
-              <Step.Description>{maquina ? "":"Seleccionar maquina"}</Step.Description>
+              <Step.Title>{maquina.maquina ? maquina.maquina :"Maquina"}</Step.Title>
+              <Step.Description>{maquina.maquina ? "":"Seleccionar maquina"}</Step.Description>
             </Step.Content>
           </Step>
     
@@ -63,14 +63,14 @@ export default function Principal() {
     return (
         <div className ="cont">
         {banda}
-        <Transition.Group animation='drop' duration = '2000' >
-            {!empleado && (
+        <Transition.Group animation='drop' duration = '0' >
+            {!empleado.empleado && (
               <Empleados mensajee ={callbackEmpleado} onHide  />        
             )}
-            {empleado && !maquina && (
+            {empleado.empleado && !maquina.maquina && (
              <Maquinas mensajee ={callbackMaquina}  /> 
             )}
-            {maquina && (
+            {maquina.maquina && (
               <QRreaderW mensaje = {{empleado, maquina}}/>
             )}
           </Transition.Group>

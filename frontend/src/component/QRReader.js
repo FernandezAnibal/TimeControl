@@ -1,20 +1,22 @@
 import React, {useState} from 'react';
 import axios from 'axios'
-import {Segment, Grid, Icon, Header, Card, Button, Label, Transition, Container} from 'semantic-ui-react';
+import {Segment, Grid, Icon, Header, Card, Button, Label, Transition, Container, Modal} from 'semantic-ui-react';
 import QrReader from 'react-qr-scanner'
 
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
     const apiUrl = "http://localhost:4000/api/posiciones/1";
+    const [empleado, setEmpleado] = useState([]);
+    const [maquina, setMaquina] = useState([]);
 
     const handleScan = data =>{
         if(data){
          
           getPosicion(JSON.parse(data));
-          console.log("Scan")
+          setEmpleado(props.mensaje.empleado);
+          setMaquina(props.mensaje.maquina)
         }
     }
-
 
     const handleError = err =>{
         console.error(err);
@@ -31,7 +33,6 @@ export default function QrReaderC(props) {
     }
 
 
-
     const getPosicion = async (posData)=>{
       const {posicion, ejecucion} = posData;
       const res = await axios.get(apiUrl, {
@@ -43,8 +44,7 @@ export default function QrReaderC(props) {
 
 
     return (
-
-
+      
       <Segment placeholder >
         <Grid columns='equal' stackable textAlign='center'>
 
@@ -56,11 +56,13 @@ export default function QrReaderC(props) {
                 <Transition.Group animation='drop' duration='0'>
                   {posicion.posicion && (
                     <Header textAlign='center' icon>
-
                   <h1>Ejecucion: {posicion.ejecucion}</h1>
                   <h1>Posicion: {posicion.posicion}</h1>
                   <h1>Cantidad: {posicion.cantidad}</h1>
-              </Header>
+                  <h1>Empleado: {empleado.empleado}</h1>
+                  <h1>Legajo: {empleado.legajo}</h1>
+                  <h1>Maquina: {maquina.maquina}</h1>
+                    </Header>
                   )}
                   {!posicion.posicion && (
                     <Header textAlign='center'>
@@ -78,15 +80,17 @@ export default function QrReaderC(props) {
 
             <Grid.Column verticalAlign='middle'>
               <Segment className='SegmentQR'>
+               
                 {posicion.posicion && (
-
+                   
                   <div className="menuProcesos"  >
+                    <Header as="h1">Elegir Proceso:</Header>
                     {
                       posicion.procesos.map(proceso =>
-                        <Button primary size='big' key={proceso.proceso} >
+                        <Label as='a' size='massive' color ='blue' href='https://www.google.com' key={proceso.proceso} >
                           {proceso.proceso} 
-                          <Label  as='a' basic pointing='left'>52</Label>
-                        </Button>
+                           <Label.Detail>214</Label.Detail>
+                        </Label>
                         
                       )
                     }
