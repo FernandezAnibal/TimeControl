@@ -15,7 +15,6 @@ const maquinaSchema = new Schema({
 
 const procesoSchema = new Schema({
     proceso: String,
-    cantidadR: Number,
     cantidadA: Number,
     maquinas: [maquinaSchema],
     "_id": false

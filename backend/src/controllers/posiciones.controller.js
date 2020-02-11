@@ -30,8 +30,8 @@ posicionCtrl.createPosicion = async (req, res) =>
 
 posicionCtrl.updatePosicion = async (req, res)=>
 {
-    const {posicion, ejecucion, proceso, cantidadR, cantidadA, maquina, empleado, legajo, operacion} = req.body;
-
+    const {posicion, ejecucion, proceso, cantidadA, maquina, empleado, legajo, operacion} = req.body;
+    console.log(req.body);
     var newPosition = await Posicion.findOneAndUpdate(
         {
             posicion,
@@ -60,7 +60,6 @@ posicionCtrl.updatePosicion = async (req, res)=>
         },
         {
             $set:{
-                "procesos.$.cantidadR":cantidadR,
                 "procesos.$.cantidadA":cantidadA
             },
             $push: 

@@ -6,10 +6,9 @@ import QrReader from 'react-qr-scanner'
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
     const apiUrl = "http://localhost:4000/api/posiciones/1";
-    const apiUrlPut = "http://localhost:4000/api/posiciones/1";
     const [empleado, setEmpleado] = useState([]);
     const [maquina, setMaquina] = useState([]);
-    const [procesoS, setProcesoS]= useState(null);
+    const [procesoS, setProcesoS]= useState([]);
 
     const handleScan = data =>{
         if(data){
@@ -27,10 +26,10 @@ export default function QrReaderC(props) {
 
     const CheckPos = (pos) => {
 
-      props.fProceso(pos);
-      setProcesoS("Hola");
-      console.log(procesoS);
-
+      props.fProceso(pos.proceso);
+      console.log(pos);
+      setProcesoS({proceso:pos.proceso, cantidadA: pos.cantidadA});
+      recordPosition(pos);
     }
 
 
@@ -45,7 +44,7 @@ export default function QrReaderC(props) {
 
 
     const getPosicion = async (posData)=>{
-      const {posicion, ejecucion} = posData;
+      const {posicion} = posData;
       const res = await axios.get(apiUrl, {
         // Asignamos el valor de userInfo a params
         params: posData
@@ -53,6 +52,21 @@ export default function QrReaderC(props) {
       setPosicion(res.data);
       props.fPosicion(posicion);
     }
+
+    const recordPosition = async (process)=>{
+
+      const res = await axios.put(apiUrl, {
+       posicion: posicion.posicion,
+       ejecucion: posicion.ejecucion,
+       proceso: process.proceso,
+       cantidadA: 5,
+       maquina: maquina.maquina,
+       empleado: empleado.empleado,  
+       legajo: empleado.legajo,
+       operacion: "inicio"
+      });
+    }
+
 
 
     return (
@@ -93,12 +107,12 @@ export default function QrReaderC(props) {
             <Grid.Column verticalAlign='middle'>
               <Segment className='SegmentQR'>
                 
-                {posicion.posicion && (
+                {posicion.posicion  && !procesoS.proceso  &&  (
                   <div className="menuProcesos"  >
                     {posicion.procesos.map(proceso =>
-                        <Label as='a' size='massive' color='blue' key={proceso.proceso} onClick={() => CheckPos(proceso.proceso)} >
+                        <Label as='a' size='massive' color='blue' key={proceso.proceso} onClick={() => CheckPos(proceso)} >
                           {proceso.proceso}
-                          <Label.Detail> Faltan: 5</Label.Detail>
+                          <Label.Detail> Faltan: {proceso.cantidadA} </Label.Detail>
                         </Label>
                       )
                     }
@@ -110,11 +124,19 @@ export default function QrReaderC(props) {
                     Escanear QR para seleccionar Proceso
                   </Header>
                 )}
-                {!posicion.posicion && procesoS && (
+                {posicion.posicion && procesoS.proceso && (
+                <Container>
                   <Header textAlign='center' icon>
-                    <Icon name='settings' />
-                    Escanear QR para seleccionar Proceso
+                    Seleccionar Cantidad Restante 
                   </Header>
+                  <Container>
+                  {
+                   () =>{for (let i = 0; i < procesoS.proceso; i++){
+                   <Button>{i}</Button>
+                   }}
+                  }
+                  </Container>
+                </Container>
                 )}
                 <Label size='big' attached='top'>Seleccionar Proceso</Label>
               </Segment>
@@ -126,7 +148,7 @@ export default function QrReaderC(props) {
                   <Icon name='pdf file outline' />
                   Escanear para ver plano de la posicion
               </Header>
-              <Label size = 'big' attached='top'>Informacion Adicional</Label>
+                <Label size = 'big' attached='top'>Informacion Adicional </Label>
               </Segment>
             </Grid.Column>
 
