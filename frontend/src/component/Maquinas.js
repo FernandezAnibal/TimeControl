@@ -4,7 +4,7 @@ import {Button, Container} from 'semantic-ui-react';
 
 export default function Maquinas(props) {
     const [data, setData] = useState([]);
-    const apiUrl = "http://localhost:4000/api/Maquinas";
+    const apiUrl = "https://192.168.0.117:4000/api/Maquinas";
     
 
     const getMachines = async () =>{
@@ -26,7 +26,7 @@ export default function Maquinas(props) {
         <div className ="menuE">
                 {
                     data.map(maquina =>
-                        <Button  onClick={() => print(maquina)}  circular size ='massive' key={maquina._id} style={{ marginBottom: '1em' }} >
+                        <Button  onClick={() => print(maquina)}  circular size ='massive' key={maquina._id} style={{ marginBottom: '1em' }}>
                             {maquina.maquina} 
                         </Button>
                     )

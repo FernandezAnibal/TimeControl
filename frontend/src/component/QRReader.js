@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import axios from 'axios'
-import {Segment, Grid, Icon, Header, Card, Button, Label, Transition, Container, Modal} from 'semantic-ui-react';
+import {Segment, Grid, Icon, Header, Button, Label, Transition, Modal, List} from 'semantic-ui-react';
 import QrReader from 'react-qr-scanner'
+import {Link} from 'react-router-dom'
 
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
-    const apiUrl = "http://localhost:4000/api/posiciones/1";
+    const apiUrl = "https://192.168.0.117:4000/api/posiciones/1";
     const [empleado, setEmpleado] = useState([]);
     const [maquina, setMaquina] = useState([]);
     const [procesoS, setProcesoS]= useState([]);
+    const [open, setOpen]= useState(false);
+    const [cantidadRes, setCantidadRes] = useState(0);
 
     const handleScan = data =>{
         if(data){
@@ -27,9 +30,7 @@ export default function QrReaderC(props) {
     const CheckPos = (pos) => {
 
       props.fProceso(pos.proceso);
-      console.log(pos);
       setProcesoS({proceso:pos.proceso, cantidadA: pos.cantidadA});
-      recordPosition(pos);
     }
 
 
@@ -53,19 +54,30 @@ export default function QrReaderC(props) {
       props.fPosicion(posicion);
     }
 
-    const recordPosition = async (process)=>{
-
+    const recordPosition = async ()=>{
       const res = await axios.put(apiUrl, {
        posicion: posicion.posicion,
        ejecucion: posicion.ejecucion,
-       proceso: process.proceso,
-       cantidadA: 5,
+       proceso: procesoS.proceso,
+       cantidadA: cantidadRes,
        maquina: maquina.maquina,
        empleado: empleado.empleado,  
        legajo: empleado.legajo,
        operacion: "inicio"
-      });
+      })
+
     }
+
+    const createButtons =()=>
+    {
+      let botones = [];
+      for (let i = 1; i <= procesoS.cantidadA; i++ ){
+      botones.push(<Button key={i}onClick={() => {setCantidadRes(i); setOpen(true)}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
+      }
+      return botones;
+    }
+
+
 
 
 
@@ -125,18 +137,12 @@ export default function QrReaderC(props) {
                   </Header>
                 )}
                 {posicion.posicion && procesoS.proceso && (
-                <Container>
-                  <Header textAlign='center' icon>
-                    Seleccionar Cantidad Restante 
-                  </Header>
-                  <Container>
-                  {
-                   () =>{for (let i = 0; i < procesoS.proceso; i++){
-                   <Button>{i}</Button>
-                   }}
+                  <div className="menuNums">
+                  { 
+                    
+                    createButtons()
                   }
-                  </Container>
-                </Container>
+                  </div>
                 )}
                 <Label size='big' attached='top'>Seleccionar Proceso</Label>
               </Segment>
@@ -154,6 +160,30 @@ export default function QrReaderC(props) {
 
           </Grid.Row>
         </Grid>
+
+        <Modal size = 'small' open={open}>
+          <Modal.Header>Registro de Tiempo</Modal.Header>
+          <Modal.Content>
+                Se grabará un registro de tiempo con las siguientes especificaciones:
+ 
+                <br/>Maquina: {maquina.maquina} 
+                <br/>Proceso: {procesoS.proceso} 
+                <br/>Empleado: {empleado.empleado}
+
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick = {()=> setOpen(false)} negative>No</Button>
+            <Button
+              positive
+              as = 'a' href='/principal' 
+              icon='checkmark'
+              labelPosition='right'
+              content='Yes'
+              onClick ={()=>recordPosition()}
+            />
+          </Modal.Actions>
+        </Modal>
+        
       </Segment>
 
     );

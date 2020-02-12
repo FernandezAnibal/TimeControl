@@ -79,7 +79,7 @@ posicionCtrl.updatePosicion = async (req, res)=>
         }
     )
 
-        res.json(newPosition);
+        res.json({mensaje: "posicion actualizada"});
 }
 
 posicionCtrl.getPosicion = async (req, res) => 
