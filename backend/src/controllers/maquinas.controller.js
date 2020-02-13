@@ -18,7 +18,10 @@ maquinaCtrl.createMaquina = async (req, res) => {
     newMaquina = new Maquina({
         maquina,
         procesoA : "",
+        posicionA: "",
+        ejecucionA: "",
         empleadoA: "",
+        legajoA:"",
         estado:"inactiva"
     });
     await newMaquina.save()
@@ -31,11 +34,15 @@ maquinaCtrl.createMaquina = async (req, res) => {
 }
 
 maquinaCtrl.updateMaquina = async (req, res) => {
-    const{proceso, empleado, estado, ejecucion, operacion, posicion} = req.body;
-    var newMaquina = await Maquina.findOneAndUpdate(req.params.id,
+    const{proceso, empleado, estado, ejecucion, operacion, posicion, legajo} = req.body;
+    console.log(req.params.id);
+    var newMaquina = await Maquina.findOneAndUpdate({_id:req.params.id},
        {
             procesoA : proceso,
             empleadoA: empleado,
+            ejecucionA: ejecucion,
+            posicionA: posicion,
+            legajoA: legajo,
             estado,
             $push :{trabajos:
                 {
@@ -43,6 +50,7 @@ maquinaCtrl.updateMaquina = async (req, res) => {
                     posicion,
                     proceso,
                     empleado,
+                    legajo,
                     operacion,
                     checkTime: (Date.now().toString())
 
@@ -50,7 +58,8 @@ maquinaCtrl.updateMaquina = async (req, res) => {
             }
         }        
     )
-    res.json(newMaquina)
+    res.json({mensaje:'Maquina Actualizada'})
+    console.log(newMaquina)
 }
 
 

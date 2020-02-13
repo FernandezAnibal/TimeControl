@@ -73,7 +73,7 @@ export default function Principal() {
               <Empleados mensajee ={callbackEmpleado} onHide  />        
             )}
             {empleado.empleado && !maquina.maquina && (
-             <Maquinas mensajee ={callbackMaquina}  /> 
+             <Maquinas funcionM ={callbackMaquina} funcionE ={empleado.empleado}   /> 
             )}
             {maquina.maquina && (
               <QRreaderW mensaje = {{empleado, maquina}} fPosicion ={callbackPosicion} fProceso = {callbackProceso}/>

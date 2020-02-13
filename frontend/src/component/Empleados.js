@@ -4,7 +4,7 @@ import {Button, Container} from 'semantic-ui-react';
 
 export default function Empleados(props) {
     const [data, setData] = useState([]);
-    const apiUrl = "https://192.168.0.117:4000/api/empleados";
+    const apiUrl = "http://192.168.0.117:4000/api/empleados";
     
     const getUser = async () =>{
     const result = await axios(apiUrl);

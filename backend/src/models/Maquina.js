@@ -6,13 +6,17 @@ const trabajoSchema = new Schema({
     proceso: String,
     checkTime: String,
     empleado: String,
+    legajo: String,
     operacion: String
 })
 
 const maquinaShema = new Schema({
     maquina : {type: String, unique: true},
+    ejecucionA: String,
     procesoA: String,
+    posicionA:String,
     empleadoA: String,
+    legajoA: String,
     estado: String,
     trabajos:[trabajoSchema]            
 })

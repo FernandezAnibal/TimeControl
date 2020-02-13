@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import axios from 'axios'
-import {Segment, Grid, Icon, Header, Button, Label, Transition, Modal, List} from 'semantic-ui-react';
+import {Segment, Grid, Icon, Header, Button, Label, Transition, Modal} from 'semantic-ui-react';
 import QrReader from 'react-qr-scanner'
-import {Link} from 'react-router-dom'
 
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
-    const apiUrl = "https://192.168.0.117:4000/api/posiciones/1";
+    const apiUrl = "http://192.168.0.117:4000/api/posiciones/1";
+    const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
     const [empleado, setEmpleado] = useState([]);
     const [maquina, setMaquina] = useState([]);
     const [procesoS, setProcesoS]= useState([]);
@@ -19,7 +19,6 @@ export default function QrReaderC(props) {
           getPosicion(JSON.parse(data));
           setEmpleado(props.mensaje.empleado);
           setMaquina(props.mensaje.maquina);
-          
         }
     }
 
@@ -54,18 +53,40 @@ export default function QrReaderC(props) {
       props.fPosicion(posicion);
     }
 
-    const recordPosition = async ()=>{
-      const res = await axios.put(apiUrl, {
-       posicion: posicion.posicion,
-       ejecucion: posicion.ejecucion,
-       proceso: procesoS.proceso,
-       cantidadA: cantidadRes,
-       maquina: maquina.maquina,
-       empleado: empleado.empleado,  
-       legajo: empleado.legajo,
-       operacion: "inicio"
-      })
 
+    function actualizaEstado(){
+
+      const recordPosition = async ()=>{
+        const res = await axios.put(apiUrl, {
+        posicion: posicion.posicion,
+        ejecucion: posicion.ejecucion,
+        proceso: procesoS.proceso,
+        cantidadA: cantidadRes,
+        maquina: maquina.maquina,
+        empleado: empleado.empleado,  
+        legajo: empleado.legajo,
+        operacion: "inicio"
+        })
+      }
+
+      const recordMaquina = async ()=>{
+        console.log(empleado.legajo)
+        const res = await axios.put(apiUrlM+maquina._id, {
+          proceso: procesoS.proceso,
+          empleado: empleado.empleado,
+          legajo: empleado.legajo,
+          estado: 'activa',
+          ejecucion: posicion.ejecucion,
+          operacion: 'inicio',
+          posicion: posicion.posicion 
+        })
+        
+      }
+
+      
+
+      recordPosition();
+      recordMaquina();
     }
 
     const createButtons =()=>
@@ -175,11 +196,11 @@ export default function QrReaderC(props) {
             <Button onClick = {()=> setOpen(false)} negative>No</Button>
             <Button
               positive
-              as = 'a' href='/principal' 
               icon='checkmark'
+              as = 'a' href='/principal'
               labelPosition='right'
               content='Yes'
-              onClick ={()=>recordPosition()}
+              onClick ={()=>{actualizaEstado(); setOpen(false)}}
             />
           </Modal.Actions>
         </Modal>
