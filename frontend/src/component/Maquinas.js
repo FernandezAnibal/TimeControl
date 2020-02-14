@@ -10,7 +10,6 @@ export default function Maquinas(props) {
     const [open, setOpen]= useState(false);
     const [maquinaA, setMaquinaA] = useState([]);
     const [procesos, setProcesos] = useState([]);
-    const [cantidad, setCantidad] = useState(0);
 
     const getMachines = async () =>{
         const result = await  axios.get(apiUrl)
@@ -26,7 +25,7 @@ export default function Maquinas(props) {
        
         if(emp.estado === 'inactiva'){
             if(props.funcionE){
-            validation(emp);
+                props.funcionM(emp);
             }
         }
         else
@@ -49,29 +48,15 @@ export default function Maquinas(props) {
     }
   
 
-    const validation = async(emp,num) =>
-    {
+    const validation = (num) =>
+    {       
         
-        if (props.funcionE){
-            if (num != undefined)
-            {
-            closeProcesoM(num);
-            recordPosition(num);
-            }
-            props.funcionM(emp);
-        }
-        else
-        {
-            closeProcesoM(num);
-            recordPosition(num);
-        }
-
-        await getMachines();
+        closeProcesoM(num);
+        recordPosition(num);
 
     }
 
     const closeProcesoM = async (num)=>{
-        console.log(num)
         const res = await axios.put(apiUrlM+maquinaA._id, {
             proceso: maquinaA.procesoA,
             empleado: maquinaA.empleadoA, 
@@ -82,6 +67,7 @@ export default function Maquinas(props) {
             cantidad: num,
             posicion: maquinaA.posicionA
         })
+
     }
 
     const recordPosition = async (num)=>{
@@ -104,12 +90,14 @@ export default function Maquinas(props) {
         let cantidadT = (procesotemp ? procesotemp.cantidadA: 0);
         let botones = [];
         for (let i = 1; i <= cantidadT; i++ ){
-        botones.push(<Button key={i}onClick={() => {setCantidad(i);validation("",i);setOpen(false);}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
+        botones.push(<Button key={i}onClick={() => {validation(i);setOpen(false);}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
         }
         return botones;
         
       }
-
+      setInterval(() => {
+        getMachines(); 
+      }, 1000);
     return (
         <Container >
         <div className ="menuE">
@@ -120,6 +108,7 @@ export default function Maquinas(props) {
                         </Button>
                     )
                 }
+
         </div>
 
         <Modal size = 'small' open={open}>
