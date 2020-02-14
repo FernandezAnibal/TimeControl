@@ -7,6 +7,7 @@ const trabajoSchema = new Schema({
     checkTime: String,
     empleado: String,
     legajo: String,
+    cantidad: String,
     operacion: String
 })
 

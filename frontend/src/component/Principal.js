@@ -16,15 +16,15 @@ export default function Principal() {
   }
 
   function callbackMaquina(maquina) {
-    setMaquina(maquina);
+      setMaquina(maquina);
   }
 
   function callbackPosicion(posicion) {
-    setPosicion(posicion);
+      setPosicion(posicion);
   }
 
   function callbackProceso(proceso) {
-    setProceso(proceso);
+      setProceso(proceso);
   }
 
   const banda = (

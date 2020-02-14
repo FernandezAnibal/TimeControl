@@ -81,26 +81,10 @@ export default function QrReaderC(props) {
           posicion: posicion.posicion 
         })
         
-      }
-
-      
-
+      }    
       recordPosition();
       recordMaquina();
     }
-
-    const createButtons =()=>
-    {
-      let botones = [];
-      for (let i = 1; i <= procesoS.cantidadA; i++ ){
-      botones.push(<Button key={i}onClick={() => {setCantidadRes(i); setOpen(true)}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
-      }
-      return botones;
-    }
-
-
-
-
 
     return (
       
@@ -140,10 +124,10 @@ export default function QrReaderC(props) {
             <Grid.Column verticalAlign='middle'>
               <Segment className='SegmentQR'>
                 
-                {posicion.posicion  && !procesoS.proceso  &&  (
+                {posicion.posicion  &&  (
                   <div className="menuProcesos"  >
                     {posicion.procesos.map(proceso =>
-                        <Label as='a' size='massive' color='blue' key={proceso.proceso} onClick={() => CheckPos(proceso)} >
+                        <Label as='a' size='massive' color='blue' key={proceso.proceso} onClick={() => {CheckPos(proceso); setOpen(true); setCantidadRes(proceso.cantidadA)}} >
                           {proceso.proceso}
                           <Label.Detail> Faltan: {proceso.cantidadA} </Label.Detail>
                         </Label>
@@ -156,14 +140,6 @@ export default function QrReaderC(props) {
                     <Icon name='settings' />
                     Escanear QR para seleccionar Proceso
                   </Header>
-                )}
-                {posicion.posicion && procesoS.proceso && (
-                  <div className="menuNums">
-                  { 
-                    
-                    createButtons()
-                  }
-                  </div>
                 )}
                 <Label size='big' attached='top'>Seleccionar Proceso</Label>
               </Segment>
@@ -193,13 +169,13 @@ export default function QrReaderC(props) {
 
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick = {()=> setOpen(false)} negative>No</Button>
+            <Button onClick = {()=> setOpen(false)} negative>Cancelar</Button>
             <Button
               positive
               icon='checkmark'
               as = 'a' href='/principal'
               labelPosition='right'
-              content='Yes'
+              content='Aceptar'
               onClick ={()=>{actualizaEstado(); setOpen(false)}}
             />
           </Modal.Actions>

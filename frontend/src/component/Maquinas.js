@@ -6,15 +6,20 @@ export default function Maquinas(props) {
     const [data, setData] = useState([]);
     const apiUrl = "http://192.168.0.117:4000/api/Maquinas";
     const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
+    const apiUrlP = "http://192.168.0.117:4000/api/posiciones/1";
     const [open, setOpen]= useState(false);
     const [maquinaA, setMaquinaA] = useState([]);
+    const [procesos, setProcesos] = useState([]);
+    const [cantidad, setCantidad] = useState(0);
 
     const getMachines = async () =>{
-        const result = await axios(apiUrl);
-        setData(result.data);
-     
-       
+        const result = await  axios.get(apiUrl)
+        setData(result.data);   
     }
+    
+    useEffect(() => {
+        getMachines();
+    }, [apiUrlP]);
 
     const print = async (emp) =>{
         setMaquinaA(emp);
@@ -27,56 +32,90 @@ export default function Maquinas(props) {
         else
         {
         setOpen(true);  
-        }      
+        }     
     }
 
-    const validation = async(emp) =>
+
+    const getPosicion = async (maq)=>{
+        const posData = {posicion:maq.posicionA, ejecucion: maq.ejecucionA};
+        console.log(posData.posicion);
+        const res = await axios.get(apiUrlP, {
+        // Asignamos el valor de userInfo a params
+        params: posData
+        });
+        if(res.data != null){
+            setProcesos(res.data.procesos);
+        }
+    }
+  
+
+    const validation = async(emp,num) =>
     {
-
-        //Se detiene la maquina de dos formas una para el proceso de produccón y otra es simple detención
-
-        //TODO hacer validación de cierre pasar para aca los iconos de actualización
+        
         if (props.funcionE){
-
-            closeProcesoM()
-            props.funcionM(emp)
+            if (num != undefined)
+            {
+            closeProcesoM(num);
+            recordPosition(num);
+            }
+            props.funcionM(emp);
         }
         else
         {
-            //TODO hhacer registro de cierre de tiempo
-            closeProcesoM();
+            closeProcesoM(num);
+            recordPosition(num);
         }
 
         await getMachines();
 
     }
 
-    const closeProcesoM = async ()=>{
-
+    const closeProcesoM = async (num)=>{
+        console.log(num)
         const res = await axios.put(apiUrlM+maquinaA._id, {
-          proceso: maquinaA.procesoA,
-          empleado: maquinaA.empleadoA,
-          legajo: maquinaA.legajoA,
-          estado: "inactiva",
-          ejecucion: maquinaA.ejecucionA,
-          operacion: "final",
-          posicion: maquinaA.posicion 
+            proceso: maquinaA.procesoA,
+            empleado: maquinaA.empleadoA, 
+            legajo: maquinaA.legajoA,
+            estado: "inactiva",
+            ejecucion: maquinaA.ejecucionA,
+            operacion: "final",
+            cantidad: num,
+            posicion: maquinaA.posicionA
         })
     }
 
-    useEffect(() => {
-        getMachines();
-    },[]);
-    
+    const recordPosition = async (num)=>{
+        const res = await axios.put(apiUrlP, {
+        posicion: maquinaA.posicionA,
+        ejecucion: maquinaA.ejecucionA,
+        proceso: maquinaA.procesoA,
+        cantidadA: num,
+        maquina: maquinaA.maquina,
+        empleado: maquinaA.empleadoA,  
+        legajo: maquinaA.legajoA,
+        operacion: "final"
+        })
+      }
 
-    
+
+      const createButtons =()=>
+      {
+        let procesotemp = procesos.find(proceso => proceso.proceso === maquinaA.procesoA)
+        let cantidadT = (procesotemp ? procesotemp.cantidadA: 0);
+        let botones = [];
+        for (let i = 1; i <= cantidadT; i++ ){
+        botones.push(<Button key={i}onClick={() => {setCantidad(i);validation("",i);setOpen(false);}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
+        }
+        return botones;
+        
+      }
 
     return (
         <Container >
         <div className ="menuE">
                 {
                     data.map(maquina =>
-                        <Button  onClick={() => print(maquina)} color = {maquina.estado === 'inactiva' ? 'orange':'green'}  circular size ='massive' key={maquina._id} style={{ marginBottom: '1em' }}>
+                        <Button  onClick={() => {print(maquina); getPosicion(maquina)}} color = {maquina.estado === 'inactiva' ? 'orange':'green'}  circular size ='massive' key={maquina._id} style={{ marginBottom: '1em' }}>
                             {maquina.maquina} 
                         </Button>
                     )
@@ -90,17 +129,13 @@ export default function Maquinas(props) {
                 <br/>Maquina: {maquinaA.maquina} 
                 <br/>Proceso: {maquinaA.procesoA} 
                 <br/>Empleado: {maquinaA.empleadoA}
-                <br/>Si acepta finalizará la sesión actual
+                <br/>Seleccionar las piezas que quedan por hacer para este proceso:
+                <br/>
+                {createButtons()}
+
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick = {()=> setOpen(false)} negative>No</Button>
-            <Button
-              positive
-              icon='checkmark'
-              labelPosition='right'
-              content='Yes'
-              onClick ={()=>{validation(maquinaA); setOpen(false)}}
-            />
+            <Button onClick = {()=> setOpen(false)} negative>Cancelar</Button>
           </Modal.Actions>
         </Modal>
 

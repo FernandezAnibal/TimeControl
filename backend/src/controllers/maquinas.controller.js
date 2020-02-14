@@ -34,7 +34,7 @@ maquinaCtrl.createMaquina = async (req, res) => {
 }
 
 maquinaCtrl.updateMaquina = async (req, res) => {
-    const{proceso, empleado, estado, ejecucion, operacion, posicion, legajo} = req.body;
+    const{proceso, empleado, estado, ejecucion, operacion, posicion, legajo, cantidad} = req.body;
     console.log(req.params.id);
     var newMaquina = await Maquina.findOneAndUpdate({_id:req.params.id},
        {
@@ -51,6 +51,7 @@ maquinaCtrl.updateMaquina = async (req, res) => {
                     proceso,
                     empleado,
                     legajo,
+                    cantidad,
                     operacion,
                     checkTime: (Date.now().toString())
 

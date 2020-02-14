@@ -68,6 +68,7 @@ posicionCtrl.updatePosicion = async (req, res)=>
                     empleado,
                     legajo,
                     operacion,
+                    cantidad : cantidadA,
                     checkTime :  (Date.now().toString())
                 }
             }

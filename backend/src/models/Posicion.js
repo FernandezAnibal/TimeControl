@@ -4,6 +4,7 @@ const intervaloTSchema = new Schema({
     empleado: String,
     legajo: Number,
     operacion: String,
+    cantidad: String,
     checkTime: String,
 })
 
