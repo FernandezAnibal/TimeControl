@@ -5,8 +5,8 @@ import QrReader from 'react-qr-scanner'
 
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
-    const apiUrl = "http://192.168.0.117:4000/api/posiciones/1";
-    const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
+    const apiUrl = "https://192.168.0.117:4000/api/posiciones/1";
+    const apiUrlM = "https://192.168.0.117:4000/api/maquinas/";
     const [empleado, setEmpleado] = useState([]);
     const [maquina, setMaquina] = useState([]);
     const [procesoS, setProcesoS]= useState([]);
@@ -107,7 +107,7 @@ export default function QrReaderC(props) {
                     </Header>
                   )}
                   {!posicion.posicion && (
-                    <Header textAlign='center'>
+                  <Header textAlign='center'>
                     <QrReader className = 'QRST'
                       delay={500}
                       style={previewStyle}
@@ -115,6 +115,7 @@ export default function QrReaderC(props) {
                       onScan={handleScan}
                     />
                     </Header>
+
                   )}
                 </Transition.Group>
               </Segment>
@@ -127,7 +128,7 @@ export default function QrReaderC(props) {
                 {posicion.posicion  &&  (
                   <div className="menuProcesos"  >
                     {posicion.procesos.map(proceso =>
-                        <Label as='a' size='massive' color='blue' key={proceso.proceso} onClick={() => {CheckPos(proceso); setOpen(true); setCantidadRes(proceso.cantidadA)}} >
+                        <Label as='a' size='large' color='blue' key={proceso.proceso} onClick={() => {CheckPos(proceso); setOpen(true); setCantidadRes(proceso.cantidadA)}} >
                           {proceso.proceso}
                           <Label.Detail> Faltan: {proceso.cantidadA} </Label.Detail>
                         </Label>

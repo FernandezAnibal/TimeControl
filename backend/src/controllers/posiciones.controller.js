@@ -9,12 +9,16 @@ posicionCtrl.getPosiciones = async (req, res) => {
 
 posicionCtrl.createPosicion = async (req, res) => 
 {
+    let existe = false;
     const {posicion, ejecucion, cantidad, procesos} = req.body;
 
     var newPosicion = await Posicion.findOne({
         posicion,
         ejecucion
     });
+
+    if(newPosicion){ existe = true }
+
     if (!newPosicion){
     newPosicion = new Posicion({
         posicion,
@@ -25,7 +29,15 @@ posicionCtrl.createPosicion = async (req, res) =>
     
     await newPosicion.save();
     }
-    res.json(newPosicion);
+    if (existe){
+        res.json("Ya Existe");
+    }
+    else 
+    {
+        res.json("Salvado");
+    }
+    
+    
 }
 
 posicionCtrl.updatePosicion = async (req, res)=>

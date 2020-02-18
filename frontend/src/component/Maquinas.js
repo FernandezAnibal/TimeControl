@@ -4,9 +4,9 @@ import {Button, Container, Modal} from 'semantic-ui-react';
 
 export default function Maquinas(props) {
     const [data, setData] = useState([]);
-    const apiUrl = "http://192.168.0.117:4000/api/Maquinas";
-    const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
-    const apiUrlP = "http://192.168.0.117:4000/api/posiciones/1";
+    const apiUrl = "https://192.168.0.117:4000/api/Maquinas";
+    const apiUrlM = "https://192.168.0.117:4000/api/maquinas/";
+    const apiUrlP = "https://192.168.0.117:4000/api/posiciones/1";
     const [open, setOpen]= useState(false);
     const [maquinaA, setMaquinaA] = useState([]);
     const [procesos, setProcesos] = useState([]);
