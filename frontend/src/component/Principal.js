@@ -3,7 +3,7 @@ import React, { useState/*, useEffect*/ } from 'react';
 import {Step, Icon, Transition} from 'semantic-ui-react';
 import Empleados from './Empleados';
 import Maquinas from './Maquinas';
-import QRreaderW from './QRReader';
+import Selector from './Selector';
 
 export default function Principal() {
   const [empleado, setEmpleado] = useState([]);
@@ -17,14 +17,6 @@ export default function Principal() {
 
   function callbackMaquina(maquina) {
       setMaquina(maquina);
-  }
-
-  function callbackPosicion(posicion) {
-      setPosicion(posicion);
-  }
-
-  function callbackProceso(proceso) {
-      setProceso(proceso);
   }
 
   const banda = (
@@ -45,23 +37,6 @@ export default function Principal() {
             </Step.Content>
           </Step>
     
-          <Step active ={!Boolean(posicion)} disabled ={!Boolean(maquina.maquina)} completed =  {Boolean(posicion)} >
-            <Icon name='codepen' />
-            <Step.Content>
-              <Step.Title>{posicion}</Step.Title>
-              <Step.Description>{posicion ? "":"Seleccionar posición"}</Step.Description>
-            </Step.Content>
-          </Step>
-
-          <Step  active ={!Boolean(proceso)} disabled ={!Boolean(posicion)} completed =  {Boolean(proceso)} >
-            <Icon name='settings' />
-            <Step.Content>
-                <Step.Title>{proceso}</Step.Title>
-              <Step.Description>{proceso ? "":"Seleccionar proceso"}</Step.Description>
-            </Step.Content>
-          </Step>
-
-
         </Step.Group>
   )
 
@@ -76,7 +51,7 @@ export default function Principal() {
              <Maquinas funcionM ={callbackMaquina} funcionE ={empleado.empleado}   /> 
             )}
             {maquina.maquina && (
-              <QRreaderW mensaje = {{empleado, maquina}} fPosicion ={callbackPosicion} fProceso = {callbackProceso}/>
+              <Selector mensaje = {{empleado, maquina}}/>
             )}
           </Transition.Group>
         {banda}

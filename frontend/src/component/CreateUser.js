@@ -6,7 +6,7 @@ import { Container, Form, Button, Card, Row, Col} from 'react-bootstrap';
 export default function CreateUser() {
     const [data, setData] = useState([]);
     const [username, setUsername] = useState("");
-    const apiUrl = "https://192.168.0.117:4000/api/users";
+    const apiUrl = "http://192.168.0.117:4000/api/users";
 
     useEffect(() => {
         getUser();

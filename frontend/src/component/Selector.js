@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import axios from 'axios'
-import {Segment, Grid, Icon, Header, Button, Label, Transition, Modal} from 'semantic-ui-react';
-import QrReader from 'react-qr-scanner'
+import {Segment, Grid, Icon, Header, Button, Label, Transition, Modal, Input} from 'semantic-ui-react';
 
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
-    const apiUrl = "https://192.168.0.117:4000/api/posiciones/1";
-    const apiUrlM = "https://192.168.0.117:4000/api/maquinas/";
+    const apiUrl = "http://192.168.0.117:4000/api/posiciones/1";
+    const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
     const [empleado, setEmpleado] = useState([]);
     const [maquina, setMaquina] = useState([]);
     const [procesoS, setProcesoS]= useState([]);
@@ -30,16 +29,6 @@ export default function QrReaderC(props) {
 
       props.fProceso(pos.proceso);
       setProcesoS({proceso:pos.proceso, cantidadA: pos.cantidadA});
-    }
-
-
-    //Estilos del QR
-    const previewStyle = {
-        'object-fit': 'cover',
-        'backgroundColor': 'black',
-        'padding':'3vh',
-        'width':'100%',
-        'height': '57vh',
     }
 
 
@@ -95,54 +84,16 @@ export default function QrReaderC(props) {
 
             <Grid.Column verticalAlign='middle' >
               <Segment className='SegmentQR' >
-
-                <Transition.Group animation='drop' duration='0'>
-                  {posicion.posicion && (
-                    <Header textAlign='center' icon>
-                  <h1>Ejecucion: {posicion.ejecucion}</h1>
-                  <h1>Posicion: {posicion.posicion}</h1>
-                  <h1>Cantidad: {posicion.cantidad}</h1>
-                  <h1>Empleado: {empleado.empleado}</h1>
-                  <h1>Maquina: {maquina.maquina}</h1>
-                    </Header>
-                  )}
-                  {!posicion.posicion && (
                   <Header textAlign='center'>
-                    <QrReader className = 'QRST'
-                      delay={500}
-                      style={previewStyle}
-                      onError={handleError}
-                      onScan={handleScan}
-                    />
-                    </Header>
-
-                  )}
-                </Transition.Group>
+                    <Input placeholder ='Escanear Proceso'></Input>
+                  </Header>
               </Segment>
-
             </Grid.Column>
 
+            
             <Grid.Column verticalAlign='middle'>
               <Segment className='SegmentQR'>
-                
-                {posicion.posicion  &&  (
-                  <div className="menuProcesos"  >
-                    {posicion.procesos.map(proceso =>
-                        <Label as='a' size='large' color='blue' key={proceso.proceso} onClick={() => {CheckPos(proceso); setOpen(true); setCantidadRes(proceso.cantidadA)}} >
-                          {proceso.proceso}
-                          <Label.Detail> Faltan: {proceso.cantidadA} </Label.Detail>
-                        </Label>
-                      )
-                    }
-                  </div>
-                )}
-                {!posicion.posicion && (
-                  <Header textAlign='center' icon>
-                    <Icon name='settings' />
-                    Escanear QR para seleccionar Proceso
-                  </Header>
-                )}
-                <Label size='big' attached='top'>Seleccionar Proceso</Label>
+
               </Segment>
             </Grid.Column>
 
@@ -151,7 +102,7 @@ export default function QrReaderC(props) {
                 <Header textAlign='center' icon>
                   <Icon name='pdf file outline' />
                   Escanear para ver plano de la posicion
-              </Header>
+                </Header>
                 <Label size = 'big' attached='top'>Informacion Adicional </Label>
               </Segment>
             </Grid.Column>
