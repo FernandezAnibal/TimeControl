@@ -37,7 +37,6 @@ export default function Maquinas(props) {
 
     const getPosicion = async (maq)=>{
         const posData = {posicion:maq.posicionA, ejecucion: maq.ejecucionA};
-        console.log(posData.posicion);
         const res = await axios.get(apiUrlP, {
         // Asignamos el valor de userInfo a params
         params: posData
@@ -95,9 +94,12 @@ export default function Maquinas(props) {
         return botones;
         
       }
+      /*
       setInterval(() => {
         getMachines(); 
       }, 1000);
+      */
+      
     return (
         <Container >
         <div className ="menuE">

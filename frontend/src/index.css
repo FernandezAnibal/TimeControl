@@ -54,11 +54,22 @@ html, body {
 
 .SegmentQR{
   min-height: 60vh;
-  display: flex; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+  -moz-appearance:textfield;
+}
 
-
-
+  

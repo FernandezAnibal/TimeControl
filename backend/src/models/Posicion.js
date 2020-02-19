@@ -1,4 +1,6 @@
 const {Schema, model} = require('mongoose');
+const mongoose = require('mongoose')
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const intervaloTSchema = new Schema({
     empleado: String,
@@ -18,8 +20,9 @@ const procesoSchema = new Schema({
     proceso: String,
     cantidadA: Number,
     maquinas: [maquinaSchema],
-    "_id": false
 })
+
+procesoSchema.plugin(AutoIncrement, {inc_field: 'id',start_seq: 100000});
 
 
 const posicionSchema = new Schema({

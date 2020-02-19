@@ -34,7 +34,7 @@ posicionCtrl.createPosicion = async (req, res) =>
     }
     else 
     {
-        res.json("Salvado");
+        res.json(newPosicion);
     }
     
     
@@ -97,13 +97,12 @@ posicionCtrl.updatePosicion = async (req, res)=>
 posicionCtrl.getPosicion = async (req, res) => 
 {   
     
-    const {posicion, ejecucion} = req.query;
+    console.log(req.query)
+    const {id} = req.query;
     const newPosicion = await Posicion.findOne({
-        posicion,
-        ejecucion
+        "procesos.id":id
     });
     res.json(newPosicion);
-
 }
 
 posicionCtrl.deletePosicion = async (req, res) =>
@@ -113,3 +112,4 @@ posicionCtrl.deletePosicion = async (req, res) =>
 }
 
 module.exports = posicionCtrl;
+
