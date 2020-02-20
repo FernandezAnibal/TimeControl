@@ -97,10 +97,20 @@ posicionCtrl.updatePosicion = async (req, res)=>
 posicionCtrl.getPosicion = async (req, res) => 
 {   
     
-    console.log(req.query)
     const {id} = req.query;
     const newPosicion = await Posicion.findOne({
         "procesos.id":id
+    });
+    res.json(newPosicion);
+}
+
+posicionCtrl.getPosicionClose = async (req, res) => 
+{   
+    
+    const {posicion, ejecucion} = req.query;
+    const newPosicion = await Posicion.findOne({
+        posicion,
+        ejecucion
     });
     res.json(newPosicion);
 }

@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 
-const {getPosiciones, createPosicion, getPosicion, deletePosicion, updatePosicion} = require('../controllers/posiciones.controller')
+const {getPosiciones, createPosicion, getPosicion, deletePosicion, updatePosicion, getPosicionClose} = require('../controllers/posiciones.controller')
 
 router.route('/')
     .get(getPosiciones)
@@ -11,4 +11,6 @@ router.route('/:id')
     .delete(deletePosicion)
     .put(updatePosicion)
 
+router.route('/1/close')
+    .get(getPosicionClose)
 module.exports = router;

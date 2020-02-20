@@ -7,6 +7,7 @@ export default function Maquinas(props) {
     const apiUrl = "http://192.168.0.117:4000/api/Maquinas";
     const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
     const apiUrlP = "http://192.168.0.117:4000/api/posiciones/1";
+    const apiUrlPC= "http://192.168.0.117:4000/api/posiciones/1/close";
     const [open, setOpen]= useState(false);
     const [maquinaA, setMaquinaA] = useState([]);
     const [procesos, setProcesos] = useState([]);
@@ -18,7 +19,8 @@ export default function Maquinas(props) {
     
     useEffect(() => {
         getMachines();
-    }, [apiUrlP]);
+    }, [procesos]);
+
 
     const print = async (emp) =>{
         setMaquinaA(emp);
@@ -37,13 +39,18 @@ export default function Maquinas(props) {
 
     const getPosicion = async (maq)=>{
         const posData = {posicion:maq.posicionA, ejecucion: maq.ejecucionA};
-        const res = await axios.get(apiUrlP, {
+        const res = await axios.get(apiUrlPC, {
         // Asignamos el valor de userInfo a params
         params: posData
         });
         if(res.data != null){
             setProcesos(res.data.procesos);
+            console.log(res.data.procesos);
         }
+        else{
+            console.log(maq.posicionA +" "+maq.ejecucionA);
+        }
+        
     }
   
 
@@ -94,11 +101,7 @@ export default function Maquinas(props) {
         return botones;
         
       }
-      /*
-      setInterval(() => {
-        getMachines(); 
-      }, 1000);
-      */
+
       
     return (
         <Container >
