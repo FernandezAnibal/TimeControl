@@ -16,10 +16,12 @@ export default function Maquinas(props) {
         const result = await  axios.get(apiUrl)
         setData(result.data);   
     }
-    
+
+
+
     useEffect(() => {
-        getMachines();
-    }, [procesos]);
+       getMachines()
+      }, []);
 
 
     const print = async (emp) =>{

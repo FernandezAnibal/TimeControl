@@ -1,5 +1,4 @@
-import React, { useState/*, useEffect*/ } from 'react';
-//import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import {Step, Icon, Transition} from 'semantic-ui-react';
 import Empleados from './Empleados';
 import Maquinas from './Maquinas';
@@ -8,8 +7,6 @@ import Selector from './Selector';
 export default function Principal() {
   const [empleado, setEmpleado] = useState([]);
   const [maquina, setMaquina] = useState([]);
-  const [posicion, setPosicion] = useState(null);
-  const [proceso, setProceso] = useState(null);
 
   function callbackEmpleado(empleado) {
       setEmpleado(empleado);
@@ -18,6 +15,8 @@ export default function Principal() {
   function callbackMaquina(maquina) {
       setMaquina(maquina);
   }
+
+
 
   const banda = (
     <Step.Group widths={4}>
@@ -43,17 +42,17 @@ export default function Principal() {
     return (
         <div className ="cont">
         {banda}
-        <Transition.Group animation='drop' duration = '0' >
-            {!empleado.empleado && (
-              <Empleados mensajee ={callbackEmpleado} onHide  />        
-            )}
-            {empleado.empleado && !maquina.maquina && (
-             <Maquinas funcionM ={callbackMaquina} funcionE ={empleado.empleado}   /> 
-            )}
-            {maquina.maquina && (
+
+            {!empleado.empleado && 
+              <Empleados mensajee ={setEmpleado} />        
+            }
+            {empleado.empleado && !maquina.maquina && 
+             <Maquinas funcionM ={setMaquina} funcionE ={empleado.empleado}   /> 
+            }
+            {maquina.maquina && 
               <Selector mensaje = {{empleado, maquina}}/>
-            )}
-          </Transition.Group>
+            }
+
         {banda}
       </div>
     );
