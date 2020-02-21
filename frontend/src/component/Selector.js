@@ -4,8 +4,8 @@ import {Segment, Grid, Icon, Header, Button, Modal, Input, Form, ButtonGroup} fr
 
 export default function QrReaderC(props) {
     const [posicion, setPosicion] = useState([]);
-    const apiUrl = "http://192.168.0.117:4000/api/posiciones/1";
-    const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
+    const apiUrl = "http://localhost:4000/api/posiciones/1";
+    const apiUrlM = "http://localhost:4000/api/maquinas/";
     const [empleado, setEmpleado] = useState([]);
     const [maquina, setMaquina] = useState([]);
     const [procesoS, setProcesoS]= useState([]);

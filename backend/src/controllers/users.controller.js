@@ -1,6 +1,6 @@
 const userCtrl = {};
 
-const User = require('../models/user');
+const User = require('../models/User');
 
 userCtrl.getUsers = async (req, res) => { 
     const user = await User.find();

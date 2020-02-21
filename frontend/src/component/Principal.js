@@ -16,6 +16,21 @@ export default function Principal() {
       setMaquina(maquina);
   }
 
+  const selectorV = () => {
+    if(empleado.empleado && !maquina.maquina){
+      return (<Maquinas funcionM ={setMaquina} funcionE ={empleado.empleado}/>)
+    }
+
+    if(!empleado.empleado ){
+      return (<Empleados mensajee ={setEmpleado} />)
+    }
+
+    if(maquina.maquina){
+      return (<Selector mensaje = {{empleado, maquina}}/>)
+    }
+
+  } 
+
 
 
   const banda = (
@@ -43,15 +58,7 @@ export default function Principal() {
         <div className ="cont">
         {banda}
 
-            {!empleado.empleado && 
-              <Empleados mensajee ={setEmpleado} />        
-            }
-            {empleado.empleado && !maquina.maquina && 
-             <Maquinas funcionM ={setMaquina} funcionE ={empleado.empleado}   /> 
-            }
-            {maquina.maquina && 
-              <Selector mensaje = {{empleado, maquina}}/>
-            }
+            {selectorV()}
 
         {banda}
       </div>

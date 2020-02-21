@@ -4,10 +4,10 @@ import {Button, Container, Modal} from 'semantic-ui-react';
 
 export default function Maquinas(props) {
     const [data, setData] = useState([]);
-    const apiUrl = "http://192.168.0.117:4000/api/Maquinas";
-    const apiUrlM = "http://192.168.0.117:4000/api/maquinas/";
-    const apiUrlP = "http://192.168.0.117:4000/api/posiciones/1";
-    const apiUrlPC= "http://192.168.0.117:4000/api/posiciones/1/close";
+    const apiUrl = "http://localhost:4000/api/Maquinas";
+    const apiUrlM = "http://localhost:4000/api/maquinas/";
+    const apiUrlP = "http://localhost:4000/api/posiciones/1";
+    const apiUrlPC= "http://localhost:4000/api/posiciones/1/close";
     const [open, setOpen]= useState(false);
     const [maquinaA, setMaquinaA] = useState([]);
     const [procesos, setProcesos] = useState([]);
@@ -98,7 +98,7 @@ export default function Maquinas(props) {
         let cantidadT = (procesotemp ? procesotemp.cantidadA: 0);
         let botones = [];
         for (let i = 1; i <= cantidadT; i++ ){
-        botones.push(<Button key={i}onClick={() => {validation(i);setOpen(false);}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
+        botones.push(<Button key={i}onClick={() => {validation(i);setOpen(false); getMachines();}} style={{ margin: '0.3em' }} size = 'big'> {i} </Button >)
         }
         return botones;
         
