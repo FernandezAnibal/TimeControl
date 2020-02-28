@@ -42,27 +42,43 @@ posicionCtrl.createPosicion = async (req, res) =>
 
 posicionCtrl.updatePosicion = async (req, res)=>
 {
+    let existe = false;
     const {posicion, ejecucion, proceso, cantidadA, maquina, empleado, legajo, operacion} = req.body;
-    var newPosition = await Posicion.findOneAndUpdate(
-        {
-            posicion,
-            ejecucion,
-            "procesos.proceso" : proceso,
-            "procesos.maquinas.maquina": {$ne:maquina}
-        },
-        {           
-            $addToSet: 
-            {
-                "procesos.$.maquinas":
-                {
-                    maquina,
+    var newPosicion = await Posicion.findOne({ejecucion, posicion});
+
+
+    for (let index = 0; index < newPosicion.procesos.length; index++) {
+        if (newPosicion.procesos[index].proceso == proceso ){
+            for (let index2 = 0; index2 < newPosicion.procesos[index].maquinas.length; index2++) {
+                if(newPosicion.procesos[index].maquinas[index2].maquina == maquina){
+                    existe = true;
+                    console.log("Existe")
                 }
             }
-        },function (err, result)
-        { }
-    )
+        }
+    }        
 
-    newPosition = await Posicion.findOneAndUpdate(
+    if(!existe){
+        var newPosition = await Posicion.findOneAndUpdate(
+            {
+                posicion,
+                ejecucion,
+                "procesos.proceso" : proceso,
+            },
+            {           
+                $addToSet: 
+                {
+                    "procesos.$.maquinas":
+                    {
+                        maquina,
+                    }
+                }
+            },function (err, result)
+            { }
+        )
+    }
+
+    var newPosition2 = await Posicion.findOneAndUpdate(
         {
             posicion,
             ejecucion,
@@ -92,6 +108,7 @@ posicionCtrl.updatePosicion = async (req, res)=>
     )
 
         res.json({mensaje: "posicion actualizada"});
+
 }
 
 posicionCtrl.getPosicion = async (req, res) => 

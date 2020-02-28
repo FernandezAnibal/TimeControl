@@ -19,5 +19,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
-  }
+  },
+  "resolutions": 
+  { "serialize-javascript": "^2.1.1" }
 }
